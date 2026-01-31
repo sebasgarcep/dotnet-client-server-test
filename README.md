@@ -1,7 +1,6 @@
 # Dotnet client-server test
 
-- Find the correct way to init the db
-- Find how to load env files properly as well
+- Find a way to init a DB pool instead
 - Add controllers implementing auth and messages
 - Add Kiota as a way to bridge client-server
 - Add transactional automated tests

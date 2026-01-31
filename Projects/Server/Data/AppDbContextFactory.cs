@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using dotenv.net;
 
 namespace Data
 {
@@ -8,20 +7,22 @@ namespace Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
-            DotEnv.Load();
+            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+            var configuration = new Configuration();
+            InitializeOptionsFromConfiguration(configuration, optionsBuilder);
+            return new AppDbContext(optionsBuilder.Options);
+        }
 
-            var host = Environment.GetEnvironmentVariable("DATABASE_HOST") ?? "localhost";
-            var database = Environment.GetEnvironmentVariable("DATABASE_NAME") ?? "testdb";
-            var user = Environment.GetEnvironmentVariable("DATABASE_USER") ?? "testuser";
-            var password = Environment.GetEnvironmentVariable("DATABASE_PASSWORD") ?? "testpass";
-            var port = Environment.GetEnvironmentVariable("DATABASE_PORT") ?? "15432";
+        public static void InitializeOptionsFromConfiguration(Configuration configuration, DbContextOptionsBuilder<AppDbContext> optionsBuilder)
+        {
+            var host = configuration.DatabaseHost;
+            var database = configuration.DatabaseName;
+            var user = configuration.DatabaseUser;
+            var password = configuration.DatabasePassword;
+            var port = configuration.DatabasePort;
 
             var connectionString = $"Host={host};Database={database};Username={user};Password={password};Port={port}";
-
-            var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             optionsBuilder.UseNpgsql(connectionString);
-
-            return new AppDbContext(optionsBuilder.Options);
         }
     }
 }
