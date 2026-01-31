@@ -1,6 +1,5 @@
 # Dotnet client-server test
 
-- Add some authenticated routes and an authentication middleware
 - Add transactional automated tests
 
 ## Commands

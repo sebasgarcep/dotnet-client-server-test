@@ -1,8 +1,7 @@
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Http;
 using Services;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Controllers
 {
@@ -11,30 +10,46 @@ namespace Controllers
         public static RouteGroupBuilder MapMessageEndpoints(this RouteGroupBuilder routeGroupBuilder)
         {
             routeGroupBuilder
-                .MapPost("/messages", async Task<IResult> (
+                .MapGet("/messages", [Authorize] async Task<IResult> (
+                    ClaimsPrincipal claimsPrincipal,
+                    MessageService messageService,
+                    UserService userService
+                ) => {
+                    var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
+                    if (user == null)
+                    {
+                        return Results.Unauthorized();
+                    }
+    
+                    var messages = await messageService.GetAllMessagesOrderedByCreationTime(user);
+                    var messageDTOs = messages.Select(m => new MessageResponseDTO(m)).ToList();
+                    return Results.Ok(new MessageListResponseDTO { messages = messageDTOs });
+                })
+                .Produces<MessageListResponseDTO>(StatusCodes.Status200OK)
+                .Produces(StatusCodes.Status401Unauthorized);
+
+            routeGroupBuilder
+                .MapPost("/messages", [Authorize] async Task<IResult> (
+                    ClaimsPrincipal claimsPrincipal,
                     MessageRequestDTO messageRequest,
+                    UserService userService,
                     MessageService messageService
                 ) => {
+                    var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
+                    if (user == null)
+                    {
+                        return Results.Unauthorized();
+                    }
+
                     var message = new Message {
                         Text = messageRequest.Text,
-                        User = null,
+                        User = user,
                     };
                     message = await messageService.AddMessage(message);
                     return Results.Ok(new MessageResponseDTO(message));
                 })
                 .Produces<MessageResponseDTO>(StatusCodes.Status201Created)
-                .RequireAuthorization();
-
-            routeGroupBuilder
-                .MapGet("/messages", async Task<IResult> (
-                    MessageService messageService
-                ) => {
-                    var messages = await messageService.GetAllMessagesOrderedByCreationTime(null);
-                    var messageDTOs = messages.Select(m => new MessageResponseDTO(m)).ToList();
-                    return Results.Ok(new MessageListResponseDTO { messages = messageDTOs });
-                })
-                .Produces<MessageListResponseDTO>(StatusCodes.Status200OK)
-                .RequireAuthorization();
+                .Produces(StatusCodes.Status401Unauthorized);
 
             return routeGroupBuilder;
         }

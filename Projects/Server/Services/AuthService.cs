@@ -8,15 +8,17 @@ namespace Services
     class AuthService
     {
         private AppDbContext AppDbContext;
+        private UserService UserService;
 
-        public AuthService(AppDbContext appDbContext)
+        public AuthService(AppDbContext appDbContext, UserService userService)
         {
             this.AppDbContext = appDbContext;
+            this.UserService = userService;
         }
 
         public async Task<User?> SignIn(string email, string password)
         {
-            var user = await this.AppDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await this.UserService.GetByEmail(email);
             if (user != null && VerifyPassword(password, user.PasswordHash))
             {
                 return user;
@@ -29,9 +31,7 @@ namespace Services
         {
             var hash = HashPassword(password);
             var user = new User { Email = email, PasswordHash = hash };
-            user = (await this.AppDbContext.Users.AddAsync(user)).Entity;
-            await this.AppDbContext.SaveChangesAsync();
-            return user;
+            return await this.UserService.CreateUser(user);
         }
 
         private const int SaltSize = 16; // 128 bits
