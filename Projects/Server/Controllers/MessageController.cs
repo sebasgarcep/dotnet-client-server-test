@@ -75,7 +75,7 @@ namespace Controllers
 
         public class MessageListResponseDTO
         {
-            public required List<MessageResponseDTO> messages;
+            public required List<MessageResponseDTO> messages { get; set; }
         }
     }
 }

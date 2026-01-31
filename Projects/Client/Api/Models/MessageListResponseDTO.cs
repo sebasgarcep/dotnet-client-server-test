@@ -12,6 +12,14 @@ namespace Api.Models
     public partial class MessageListResponseDTO : IParsable
     #pragma warning restore CS1591
     {
+        /// <summary>The messages property</summary>
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP3_1_OR_GREATER
+#nullable enable
+        public List<global::Api.Models.MessageResponseDTO>? Messages { get; set; }
+#nullable restore
+#else
+        public List<global::Api.Models.MessageResponseDTO> Messages { get; set; }
+#endif
         /// <summary>
         /// Creates a new instance of the appropriate class based on discriminator value
         /// </summary>
@@ -30,6 +38,7 @@ namespace Api.Models
         {
             return new Dictionary<string, Action<IParseNode>>
             {
+                { "messages", n => { Messages = n.GetCollectionOfObjectValues<global::Api.Models.MessageResponseDTO>(global::Api.Models.MessageResponseDTO.CreateFromDiscriminatorValue)?.AsList(); } },
             };
         }
         /// <summary>
@@ -39,6 +48,7 @@ namespace Api.Models
         public virtual void Serialize(ISerializationWriter writer)
         {
             if(ReferenceEquals(writer, null)) throw new ArgumentNullException(nameof(writer));
+            writer.WriteCollectionOfObjectValues<global::Api.Models.MessageResponseDTO>("messages", Messages);
         }
     }
 }

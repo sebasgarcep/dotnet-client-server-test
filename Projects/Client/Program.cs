@@ -30,6 +30,7 @@ var message2 = (await client.Messages.PostAsync(new Api.Models.MessageRequestDTO
 var message3 = (await client.Messages.PostAsync(new Api.Models.MessageRequestDTO { Text = "test 3" }))!;
 
 var messageList = (await client.Messages.GetAsync())!;
+Console.WriteLine("Finished!");
 
 class BearerTokenProvider : IAccessTokenProvider
 {
