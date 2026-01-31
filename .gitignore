@@ -2,3 +2,4 @@ bin
 bin\\Debug
 obj
 .env
+*.log
