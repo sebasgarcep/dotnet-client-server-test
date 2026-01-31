@@ -34,7 +34,7 @@ namespace Data
 
         private void ApplyAuditDates()
         {
-            var now = DateTime.Now;
+            var now = DateTime.UtcNow;
 
             foreach (var entry in ChangeTracker.Entries<IAuditableEntity>())
             {

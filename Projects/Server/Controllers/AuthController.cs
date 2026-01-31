@@ -45,7 +45,7 @@ namespace Controllers
 
         public class AuthRequestDTO
         {
-            public required string Email { get; set => field = field.ToLower(); }
+            public required string Email { get; set => field = value.ToLower(); }
             public required string Password { get; set; }
         }
 

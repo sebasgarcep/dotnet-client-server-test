@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet tool restore" />
     <Exec Command="dotnet swagger tofile --output $(OutputPath)swagger.json $(OutputPath)$(AssemblyName).dll v1" />
     <Exec Command="dotnet kiota generate -d $(OutputPath)swagger.json -l CSharp -n Api -o ../Client/Api --exclude-backward-compatible" />
   </Target>
