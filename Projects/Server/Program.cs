@@ -30,4 +30,7 @@ app.UseMiddleware<TransactionMiddleware>();
 app.MapGroup("/auth")
     .MapAuthEndpoints();
 
+app.MapGroup("/messages")
+    .MapMessageEndpoints();
+
 app.Run();
