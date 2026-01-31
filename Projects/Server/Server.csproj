@@ -22,7 +22,7 @@
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="dotnet tool restore" />
     <Exec Command="dotnet swagger tofile --output $(OutputPath)swagger.json $(OutputPath)$(AssemblyName).dll v1" />
-    <Exec Command="dotnet kiota generate -d $(OutputPath)swagger.json -l CSharp -o Projects/Client/Api" />
+    <Exec Command="dotnet kiota generate -d $(OutputPath)swagger.json -l CSharp -o ../Client/Api" />
   </Target>
 
 </Project>

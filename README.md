@@ -1,6 +1,5 @@
 # Dotnet client-server test
 
-- Add Kiota as a way to bridge client-server
 - Add transactional automated tests
 
 ## Commands
