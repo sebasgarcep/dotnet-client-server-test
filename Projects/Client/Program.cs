@@ -1,8 +1,8 @@
 ﻿using Microsoft.Kiota.Abstractions.Authentication;
 using Microsoft.Kiota.Http.HttpClientLibrary;
 
-var authProvider = new AnonymousAuthenticationProvider();
-var adapter = new HttpClientRequestAdapter(authProvider);
+var anonymousAuthProvider = new AnonymousAuthenticationProvider();
+var adapter = new HttpClientRequestAdapter(anonymousAuthProvider);
 // TODO: Load from .env
 adapter.BaseUrl = "http://localhost:5000";
 var client = new Api.ApiClient(adapter);
@@ -16,7 +16,34 @@ var email = $"test_{randomKey}@gmail.com";
 var password = "12345678";
 
 var signupResult = (await client.Auth.Signup.PostAsync(new Api.Models.AuthRequestDTO { Email = email, Password = password }))!;
-Console.WriteLine(signupResult.Token);
-
 var signinResult = (await client.Auth.Signin.PostAsync(new Api.Models.AuthRequestDTO { Email = email, Password = password }))!;
-Console.WriteLine(signinResult.Token);
+
+// Swap unauthenticated client with authenticated one
+var authProvider = new BaseBearerTokenAuthenticationProvider(new BearerTokenProvider(signinResult.Token!));
+adapter = new HttpClientRequestAdapter(authProvider);
+// TODO: Load from .env
+adapter.BaseUrl = "http://localhost:5000";
+client = new Api.ApiClient(adapter);
+
+var message1 = (await client.Messages.PostAsync(new Api.Models.MessageRequestDTO { Text = "test 1" }))!;
+var message2 = (await client.Messages.PostAsync(new Api.Models.MessageRequestDTO { Text = "test 2" }))!;
+var message3 = (await client.Messages.PostAsync(new Api.Models.MessageRequestDTO { Text = "test 3" }))!;
+
+var messageList = (await client.Messages.GetAsync())!;
+
+class BearerTokenProvider : IAccessTokenProvider
+{
+	private string Token;
+
+	public BearerTokenProvider(string token)
+	{
+		this.Token = token;
+	}
+
+	public Task<string> GetAuthorizationTokenAsync(Uri uri, Dictionary<string, object>? additionalAuthenticationContext = default, CancellationToken cancellationToken = default)
+	{
+		return Task.FromResult(this.Token);
+	}
+
+	public AllowedHostsValidator AllowedHostsValidator => new AllowedHostsValidator();
+}

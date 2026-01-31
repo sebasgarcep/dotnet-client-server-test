@@ -10,7 +10,7 @@ namespace Controllers
         public static RouteGroupBuilder MapMessageEndpoints(this RouteGroupBuilder routeGroupBuilder)
         {
             routeGroupBuilder
-                .MapGet("/messages", [Authorize] async Task<IResult> (
+                .MapGet("/", [Authorize] async Task<IResult> (
                     ClaimsPrincipal claimsPrincipal,
                     MessageService messageService,
                     UserService userService
@@ -29,7 +29,7 @@ namespace Controllers
                 .Produces(StatusCodes.Status401Unauthorized);
 
             routeGroupBuilder
-                .MapPost("/messages", [Authorize] async Task<IResult> (
+                .MapPost("/", [Authorize] async Task<IResult> (
                     ClaimsPrincipal claimsPrincipal,
                     MessageRequestDTO messageRequest,
                     UserService userService,
