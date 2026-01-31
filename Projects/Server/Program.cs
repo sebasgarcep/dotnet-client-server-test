@@ -1,13 +1,16 @@
-﻿using Controllers;
-using Data;
-using Microsoft.EntityFrameworkCore;
+﻿using Data;
+using Controllers;
+using Middlewares;
 using Services;
-using Server.Middleware;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SupportNonNullableReferenceTypes();
+});
 builder.Services.AddSingleton<Configuration>();
 builder.Services.AddDbContextPool<AppDbContext>((serviceProvider, optionsBuilder) =>
 {

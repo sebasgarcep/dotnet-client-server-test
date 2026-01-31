@@ -1,6 +1,6 @@
 using Data;
 
-namespace Server.Middleware
+namespace Middlewares
 {
     public class TransactionMiddleware
     {
