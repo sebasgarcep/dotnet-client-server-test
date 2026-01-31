@@ -28,7 +28,7 @@ namespace Services
         public async Task<User?> SignUp(string email, string password)
         {
             var hash = HashPassword(password);
-            var user = new User { Email = email, PasswordHash = hash, CreatedAt = DateTime.Now };
+            var user = new User { Email = email, PasswordHash = hash };
             user = (await this.AppDbContext.Users.AddAsync(user)).Entity;
             await this.AppDbContext.SaveChangesAsync();
             return user;
