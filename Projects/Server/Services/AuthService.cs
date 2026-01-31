@@ -29,6 +29,11 @@ namespace Services
 
         public async Task<User?> SignUp(string email, string password)
         {
+            var existingUser = await this.UserService.GetByEmail(email);
+            if (existingUser != null)
+            {
+                return null;
+            }
             var hash = HashPassword(password);
             var user = new User { Email = email, PasswordHash = hash };
             return await this.UserService.CreateUser(user);
