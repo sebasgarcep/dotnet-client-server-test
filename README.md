@@ -1,7 +1,6 @@
 # Dotnet client-server test
 
-- Find a way to init a DB pool instead
-- Add controllers implementing auth and messages
+- Add created at/updated at timestamps to models
 - Add Kiota as a way to bridge client-server
 - Add transactional automated tests
 
@@ -12,4 +11,6 @@
 dotnet ef migrations add <Migration name> --project Projects/Server
 # Run migrations
 dotnet ef database update --project Projects/Server
+# Run dev server
+dotnet watch run --project Projects/Server
 ```

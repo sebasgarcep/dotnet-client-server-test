@@ -1,10 +1,39 @@
 using Data.Models;
-using System.Security.Cryptography;
 using Data;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace Services
 {
-    class Auth {
+    class AuthService
+    {
+        private AppDbContext AppDbContext;
+
+        public AuthService(AppDbContext appDbContext)
+        {
+            this.AppDbContext = appDbContext;
+        }
+
+        public async Task<User?> SignIn(string email, string password)
+        {
+            var user = await this.AppDbContext.Users.FirstOrDefaultAsync(u => u.Email == email);
+            if (user != null && VerifyPassword(password, user.PasswordHash))
+            {
+                return user;
+            }
+            return null;
+        }
+
+
+        public async Task<User?> SignUp(string email, string password)
+        {
+            var hash = HashPassword(password);
+            var user = new User { Email = email, PasswordHash = hash, CreatedAt = DateTime.Now };
+            user = (await this.AppDbContext.Users.AddAsync(user)).Entity;
+            await this.AppDbContext.SaveChangesAsync();
+            return user;
+        }
+
         private const int SaltSize = 16; // 128 bits
         private const int KeySize = 32; // 256 bits
         private const int Iterations = 10000;
@@ -42,30 +71,10 @@ namespace Services
                 salt,
                 Iterations,
                 HashAlgorithmName.SHA256,
-                KeySize);
+                KeySize
+                );
 
             return keyToCheck.SequenceEqual(key);
-        }
-
-        public static User? SignIn(AppDbContext context, string email, string password)
-        {
-            email = email.ToLower();
-            var user = context.Users.FirstOrDefault(u => u.Email == email);
-            if (user != null && VerifyPassword(password, user.PasswordHash))
-            {
-                return user;
-            }
-            return null;
-        }
-
-        public static User SignUp(AppDbContext context, string email, string password)
-        {
-            email = email.ToLower();
-            var hash = HashPassword(password);
-            var user = new User { Email = email, PasswordHash = hash, CreatedAt = DateTime.Now };
-            user = context.Users.Add(user).Entity;
-            context.SaveChanges();
-            return user;
         }
     }
 }
