@@ -8,6 +8,20 @@
         "dotnet-ef"
       ],
       "rollForward": false
+    },
+    "microsoft.openapi.kiota": {
+      "version": "1.30.0",
+      "commands": [
+        "kiota"
+      ],
+      "rollForward": false
+    },
+    "swashbuckle.aspnetcore.cli": {
+      "version": "10.1.0",
+      "commands": [
+        "swagger"
+      ],
+      "rollForward": false
     }
   }
 }
