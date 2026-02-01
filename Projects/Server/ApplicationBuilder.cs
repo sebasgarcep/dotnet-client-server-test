@@ -50,6 +50,20 @@ public class ApplicationBuilder
         });
     }
 
+    public void AddDbContext()
+    {
+        this.WebApplicationBuilder.Services.AddDbContext<AppDbContext>((serviceProvider, optionsBuilder) =>
+        {
+            var configuration = serviceProvider.GetService<Configuration>()!;
+            AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>) optionsBuilder);
+        });
+    }
+
+    public void UseUrl(string url)
+    {
+        this.WebApplicationBuilder.WebHost.UseUrls(url);
+    }
+
     public WebApplication GetWebApplication(
         bool atomic = true
     )

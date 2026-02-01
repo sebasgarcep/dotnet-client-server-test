@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../Server/Server.csproj" />
     <PackageReference Include="Microsoft.Kiota.Abstractions" Version="1.14.0" />
     <PackageReference Include="Microsoft.Kiota.Http.HttpClientLibrary" Version="1.14.0" />
     <PackageReference Include="Microsoft.Kiota.Serialization.Json" Version="1.14.0" />

@@ -10,8 +10,8 @@
   <ItemGroup>
     <PackageReference Include="dotenv.net" Version="4.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2">
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -22,7 +22,7 @@
 
   <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="dotnet swagger tofile --output $(OutputPath)swagger.json $(OutputPath)$(AssemblyName).dll v1" />
-    <Exec Command="dotnet kiota generate -d $(OutputPath)swagger.json -l CSharp -n Api -o ../Client/Api --exclude-backward-compatible" />
+    <Exec Command="dotnet kiota generate -d $(OutputPath)swagger.json -l CSharp -n Api -o ../Client/Api --exclude-backward-compatible --disable-validation-rules=NoServerEntry" />
   </Target>
 
 </Project>
