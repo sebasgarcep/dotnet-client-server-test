@@ -56,7 +56,7 @@ public class ApplicationBuilder
         {
             var configuration = serviceProvider.GetService<Configuration>()!;
             AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>) optionsBuilder);
-        });
+        }, contextLifetime: ServiceLifetime.Singleton);
     }
 
     public void UseUrl(string url)
