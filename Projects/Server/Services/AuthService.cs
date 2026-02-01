@@ -46,7 +46,7 @@ namespace Services
         private static string HashPassword(string password)
         {
             var salt = RandomNumberGenerator.GetBytes(SaltSize);
-            
+
             var hash = Rfc2898DeriveBytes.Pbkdf2(
                 password,
                 salt,

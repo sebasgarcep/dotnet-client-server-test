@@ -10,7 +10,7 @@ var client = new Api.ApiClient(adapter);
 var random = new Random();
 const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 var randomKey = new string(Enumerable.Repeat(chars, 8)
-	.Select(s => s[random.Next(s.Length)]).ToArray());
+    .Select(s => s[random.Next(s.Length)]).ToArray());
 
 var email = $"test_{randomKey}@gmail.com";
 var password = "12345678";
@@ -34,17 +34,17 @@ Console.WriteLine("Finished!");
 
 class BearerTokenProvider : IAccessTokenProvider
 {
-	private string Token;
+    private string Token;
 
-	public BearerTokenProvider(string token)
-	{
-		this.Token = token;
-	}
+    public BearerTokenProvider(string token)
+    {
+        this.Token = token;
+    }
 
-	public Task<string> GetAuthorizationTokenAsync(Uri uri, Dictionary<string, object>? additionalAuthenticationContext = default, CancellationToken cancellationToken = default)
-	{
-		return Task.FromResult(this.Token);
-	}
+    public Task<string> GetAuthorizationTokenAsync(Uri uri, Dictionary<string, object>? additionalAuthenticationContext = default, CancellationToken cancellationToken = default)
+    {
+        return Task.FromResult(this.Token);
+    }
 
-	public AllowedHostsValidator AllowedHostsValidator => new AllowedHostsValidator();
+    public AllowedHostsValidator AllowedHostsValidator => new AllowedHostsValidator();
 }

@@ -28,7 +28,8 @@ public class ApplicationBuilder
         this.WebApplicationBuilder.Services.AddScoped<AuthService>();
 
         this.WebApplicationBuilder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = false,
@@ -46,7 +47,7 @@ public class ApplicationBuilder
         this.WebApplicationBuilder.Services.AddDbContextPool<AppDbContext>((serviceProvider, optionsBuilder) =>
         {
             var configuration = serviceProvider.GetService<Configuration>()!;
-            AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>) optionsBuilder);
+            AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>)optionsBuilder);
         });
     }
 
@@ -55,7 +56,7 @@ public class ApplicationBuilder
         this.WebApplicationBuilder.Services.AddDbContext<AppDbContext>((serviceProvider, optionsBuilder) =>
         {
             var configuration = serviceProvider.GetService<Configuration>()!;
-            AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>) optionsBuilder);
+            AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>)optionsBuilder);
         }, contextLifetime: ServiceLifetime.Singleton);
     }
 

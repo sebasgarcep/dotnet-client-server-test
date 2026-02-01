@@ -11,7 +11,7 @@ namespace Controllers
         public static RouteGroupBuilder MapMessageEndpoints(this RouteGroupBuilder routeGroupBuilder)
         {
             routeGroupBuilder.MapGet("/", GetMessages);
-            routeGroupBuilder.MapPost("/",  PostMessage);
+            routeGroupBuilder.MapPost("/", PostMessage);
             return routeGroupBuilder;
         }
 
@@ -20,7 +20,8 @@ namespace Controllers
             ClaimsPrincipal claimsPrincipal,
             MessageService messageService,
             UserService userService
-        ) {
+        )
+        {
             var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
             if (user == null)
             {
@@ -38,14 +39,16 @@ namespace Controllers
             MessageRequestDTO messageRequest,
             UserService userService,
             MessageService messageService
-        ) {
+        )
+        {
             var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
             if (user == null)
             {
                 return TypedResults.Unauthorized();
             }
 
-            var message = new Message {
+            var message = new Message
+            {
                 Text = messageRequest.Text,
                 User = user,
             };

@@ -7,7 +7,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 {
     private readonly ApplicationFixture ApplicationFixture;
     protected HttpClient Client;
-    
+
     private IDbContextTransaction? DbContextTransaction;
 
     public IntegrationTestFixture(ApplicationFixture applicationFixture)
