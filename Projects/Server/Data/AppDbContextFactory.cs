@@ -1,3 +1,4 @@
+using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
@@ -7,6 +8,7 @@ namespace Data
     {
         public AppDbContext CreateDbContext(string[] args)
         {
+            DotEnv.Load();
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
             var configuration = new Configuration();
             InitializeOptionsFromConfiguration(configuration, optionsBuilder);

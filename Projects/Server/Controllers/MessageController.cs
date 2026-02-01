@@ -2,6 +2,7 @@ using Services;
 using Data.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Controllers
 {
@@ -9,49 +10,47 @@ namespace Controllers
     {
         public static RouteGroupBuilder MapMessageEndpoints(this RouteGroupBuilder routeGroupBuilder)
         {
-            routeGroupBuilder
-                .MapGet("/", [Authorize] async Task<IResult> (
-                    ClaimsPrincipal claimsPrincipal,
-                    MessageService messageService,
-                    UserService userService
-                ) => {
-                    var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
-                    if (user == null)
-                    {
-                        return Results.Unauthorized();
-                    }
-    
-                    var messages = await messageService.GetAllMessagesOrderedByCreationTime(user);
-                    var messageDTOs = messages.Select(m => new MessageResponseDTO(m)).ToList();
-                    return Results.Ok(new MessageListResponseDTO { messages = messageDTOs });
-                })
-                .Produces<MessageListResponseDTO>(StatusCodes.Status200OK)
-                .Produces(StatusCodes.Status401Unauthorized);
-
-            routeGroupBuilder
-                .MapPost("/", [Authorize] async Task<IResult> (
-                    ClaimsPrincipal claimsPrincipal,
-                    MessageRequestDTO messageRequest,
-                    UserService userService,
-                    MessageService messageService
-                ) => {
-                    var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
-                    if (user == null)
-                    {
-                        return Results.Unauthorized();
-                    }
-
-                    var message = new Message {
-                        Text = messageRequest.Text,
-                        User = user,
-                    };
-                    message = await messageService.AddMessage(message);
-                    return Results.Ok(new MessageResponseDTO(message));
-                })
-                .Produces<MessageResponseDTO>(StatusCodes.Status201Created)
-                .Produces(StatusCodes.Status401Unauthorized);
-
+            routeGroupBuilder.MapGet("/", GetMessages);
+            routeGroupBuilder.MapPost("/",  PostMessage);
             return routeGroupBuilder;
+        }
+
+        [Authorize]
+        private static async Task<Results<Ok<MessageListResponseDTO>, UnauthorizedHttpResult>> GetMessages(
+            ClaimsPrincipal claimsPrincipal,
+            MessageService messageService,
+            UserService userService
+        ) {
+            var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
+            if (user == null)
+            {
+                return TypedResults.Unauthorized();
+            }
+
+            var messages = await messageService.GetAllMessagesOrderedByCreationTime(user);
+            var messageDTOs = messages.Select(m => new MessageResponseDTO(m)).ToList();
+            return TypedResults.Ok(new MessageListResponseDTO { messages = messageDTOs });
+        }
+
+        [Authorize]
+        private static async Task<Results<Ok<MessageResponseDTO>, UnauthorizedHttpResult>> PostMessage(
+            ClaimsPrincipal claimsPrincipal,
+            MessageRequestDTO messageRequest,
+            UserService userService,
+            MessageService messageService
+        ) {
+            var user = await userService.GetByClaimsPrincipal(claimsPrincipal);
+            if (user == null)
+            {
+                return TypedResults.Unauthorized();
+            }
+
+            var message = new Message {
+                Text = messageRequest.Text,
+                User = user,
+            };
+            message = await messageService.AddMessage(message);
+            return TypedResults.Ok(new MessageResponseDTO(message));
         }
 
         public class MessageRequestDTO
