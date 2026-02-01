@@ -20,7 +20,7 @@ public class ApplicationBuilder
         {
             options.SupportNonNullableReferenceTypes();
         });
-        var configuration = new Configuration();
+        var configuration = new ApplicationConfiguration();
         this.WebApplicationBuilder.Services.AddSingleton(configuration);
         this.WebApplicationBuilder.Services.AddSingleton<JwtService>();
         this.WebApplicationBuilder.Services.AddScoped<UserService>();
@@ -46,7 +46,7 @@ public class ApplicationBuilder
     {
         this.WebApplicationBuilder.Services.AddDbContextPool<AppDbContext>((serviceProvider, optionsBuilder) =>
         {
-            var configuration = serviceProvider.GetService<Configuration>()!;
+            var configuration = serviceProvider.GetService<ApplicationConfiguration>()!;
             AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>)optionsBuilder);
         });
     }
@@ -55,7 +55,7 @@ public class ApplicationBuilder
     {
         this.WebApplicationBuilder.Services.AddDbContext<AppDbContext>((serviceProvider, optionsBuilder) =>
         {
-            var configuration = serviceProvider.GetService<Configuration>()!;
+            var configuration = serviceProvider.GetService<ApplicationConfiguration>()!;
             AppDbContextFactory.InitializeOptionsFromConfiguration(configuration, (DbContextOptionsBuilder<AppDbContext>)optionsBuilder);
         }, contextLifetime: ServiceLifetime.Singleton);
     }

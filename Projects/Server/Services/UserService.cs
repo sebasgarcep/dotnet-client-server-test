@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
-    class UserService
+    sealed class UserService
     {
         private AppDbContext AppDbContext;
 

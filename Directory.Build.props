@@ -1,5 +1,9 @@
 <Project>
     <PropertyGroup>
         <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
+        <!-- This makes all style rules warnings by default -->
+        <AnalysisMode>All</AnalysisMode>
     </PropertyGroup>
 </Project>

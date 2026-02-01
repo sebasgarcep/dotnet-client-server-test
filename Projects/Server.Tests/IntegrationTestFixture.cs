@@ -3,17 +3,21 @@ using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.DependencyInjection;
 
 [Collection("ApplicationCollection")]
+#pragma warning disable CA1001 // Types that own disposable fields should be disposable
 public class IntegrationTestFixture : IAsyncLifetime
+#pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
     private readonly ApplicationFixture ApplicationFixture;
+#pragma warning disable CA1051 // Do not declare visible instance fields
     protected HttpClient Client;
+#pragma warning restore CA1051 // Do not declare visible instance fields
 
     private IDbContextTransaction? DbContextTransaction;
 
     public IntegrationTestFixture(ApplicationFixture applicationFixture)
     {
         this.ApplicationFixture = applicationFixture;
-        this.Client = new HttpClient { BaseAddress = new Uri(applicationFixture.Url) };
+        this.Client = new HttpClient { BaseAddress = new Uri(ApplicationFixture.Url) };
     }
 
     public async Task InitializeAsync()
@@ -29,5 +33,7 @@ public class IntegrationTestFixture : IAsyncLifetime
             await this.DbContextTransaction.RollbackAsync();
             await this.DbContextTransaction.DisposeAsync();
         }
+
+        this.Client.Dispose();
     }
 }

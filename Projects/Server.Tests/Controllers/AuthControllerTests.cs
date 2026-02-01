@@ -11,7 +11,7 @@ public class AuthControllerTests : IntegrationTestFixture
     }
 
     [Fact]
-    public async Task SignUp_ValidCredentials_ReturnsOkWithToken()
+    public async Task SignUpValidCredentialsReturnsOkWithToken()
     {
         // Arrange
         var request = new AuthController.AuthRequestDTO
@@ -32,7 +32,7 @@ public class AuthControllerTests : IntegrationTestFixture
     }
 
     [Fact]
-    public async Task SignUp_DuplicateEmail_ReturnsUnauthorized()
+    public async Task SignUpDuplicateEmailReturnsUnauthorized()
     {
         // Arrange
         var request = new AuthController.AuthRequestDTO
@@ -52,7 +52,7 @@ public class AuthControllerTests : IntegrationTestFixture
     }
 
     [Fact]
-    public async Task SignIn_ValidCredentials_ReturnsOkWithToken()
+    public async Task SignInValidCredentialsReturnsOkWithToken()
     {
         // Arrange
 
@@ -81,7 +81,7 @@ public class AuthControllerTests : IntegrationTestFixture
     }
 
     [Fact]
-    public async Task SignIn_InvalidEmail_ReturnsUnauthorized()
+    public async Task SignInInvalidEmailReturnsUnauthorized()
     {
         // Arrange
         var request = new AuthController.AuthRequestDTO
@@ -98,7 +98,7 @@ public class AuthControllerTests : IntegrationTestFixture
     }
 
     [Fact]
-    public async Task SignIn_InvalidPassword_ReturnsUnauthorized()
+    public async Task SignInInvalidPasswordReturnsUnauthorized()
     {
         // Arrange
 
@@ -123,7 +123,7 @@ public class AuthControllerTests : IntegrationTestFixture
     }
 
     [Fact]
-    public async Task SignUp_EmailIsLowercased()
+    public async Task SignUpEmailIsLowercased()
     {
         // Arrange
         var request = new AuthController.AuthRequestDTO

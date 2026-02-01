@@ -8,15 +8,15 @@ namespace Services
 {
     public class JwtService
     {
-        private readonly Configuration Configuration;
+        private readonly ApplicationConfiguration ApplicationConfiguration;
 
         private const string ISSUER = "test";
         private const string AUDIENCE = "all";
         private const int EXPIRY_MINUTES = 60;
 
-        public JwtService(Configuration configuration)
+        public JwtService(ApplicationConfiguration configuration)
         {
-            Configuration = configuration;
+            ApplicationConfiguration = configuration;
         }
 
         public string GenerateToken(User user)
@@ -28,7 +28,7 @@ namespace Services
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.Configuration.JwtSecret));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.ApplicationConfiguration.JwtSecret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

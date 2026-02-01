@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 public class ApplicationFixture : IAsyncLifetime
 {
     public WebApplication? WebApplication { get; private set; }
-    public string Url { get => "http://localhost:5001"; }
+    public static string Url => "http://localhost:5001";
 
     public async Task InitializeAsync()
     {
@@ -15,7 +15,7 @@ public class ApplicationFixture : IAsyncLifetime
 
         var applicationBuilder = new ApplicationBuilder([]);
         applicationBuilder.AddDbContext();
-        applicationBuilder.UseUrl(this.Url);
+        applicationBuilder.UseUrl(Url);
 
         this.WebApplication = applicationBuilder.GetWebApplication(atomic: false);
 

@@ -1,18 +1,14 @@
 using Data.Models;
-using Data;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 
 namespace Services
 {
-    class AuthService
+    sealed class AuthService
     {
-        private AppDbContext AppDbContext;
         private UserService UserService;
 
-        public AuthService(AppDbContext appDbContext, UserService userService)
+        public AuthService(UserService userService)
         {
-            this.AppDbContext = appDbContext;
             this.UserService = userService;
         }
 

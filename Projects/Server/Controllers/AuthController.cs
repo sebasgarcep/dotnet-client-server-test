@@ -17,8 +17,7 @@ namespace Controllers
             AuthRequestDTO authRequestDTO,
             AuthService authService,
             JwtService jwtService
-        )
-        {
+        ) {
             var user = await authService.SignIn(authRequestDTO.Email, authRequestDTO.Password);
             if (user == null)
             {
@@ -31,8 +30,7 @@ namespace Controllers
             AuthRequestDTO authRequestDTO,
             AuthService authService,
             JwtService jwtService
-        )
-        {
+        ) {
             var user = await authService.SignUp(authRequestDTO.Email, authRequestDTO.Password);
             if (user == null)
             {

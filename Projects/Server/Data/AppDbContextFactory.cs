@@ -10,12 +10,12 @@ namespace Data
         {
             DotEnv.Load();
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            var configuration = new Configuration();
+            var configuration = new ApplicationConfiguration();
             InitializeOptionsFromConfiguration(configuration, optionsBuilder);
             return new AppDbContext(optionsBuilder.Options);
         }
 
-        public static void InitializeOptionsFromConfiguration(Configuration configuration, DbContextOptionsBuilder<AppDbContext> optionsBuilder)
+        public static void InitializeOptionsFromConfiguration(ApplicationConfiguration configuration, DbContextOptionsBuilder<AppDbContext> optionsBuilder)
         {
             var host = configuration.DatabaseHost;
             var database = configuration.DatabaseName;

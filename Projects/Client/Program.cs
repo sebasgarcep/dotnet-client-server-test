@@ -18,6 +18,8 @@ var password = "12345678";
 var signupResult = (await client.Auth.Signup.PostAsync(new Api.Models.AuthRequestDTO { Email = email, Password = password }))!;
 var signinResult = (await client.Auth.Signin.PostAsync(new Api.Models.AuthRequestDTO { Email = email, Password = password }))!;
 
+adapter.Dispose();
+
 // Swap unauthenticated client with authenticated one
 var authProvider = new BaseBearerTokenAuthenticationProvider(new BearerTokenProvider(signinResult.Token!));
 adapter = new HttpClientRequestAdapter(authProvider);
@@ -32,7 +34,9 @@ var message3 = (await client.Messages.PostAsync(new Api.Models.MessageRequestDTO
 var messageList = (await client.Messages.GetAsync())!;
 Console.WriteLine("Finished!");
 
-class BearerTokenProvider : IAccessTokenProvider
+adapter.Dispose();
+
+sealed class BearerTokenProvider : IAccessTokenProvider
 {
     private string Token;
 

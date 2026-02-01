@@ -1,4 +1,4 @@
-public class Configuration
+public class ApplicationConfiguration
 {
     public string DatabaseName { get => Environment.GetEnvironmentVariable("DATABASE_NAME") ?? ""; }
     public string DatabaseHost { get => Environment.GetEnvironmentVariable("DATABASE_HOST") ?? ""; }
