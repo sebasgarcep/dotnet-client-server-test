@@ -8,9 +8,7 @@ public class IntegrationTestFixture : IAsyncLifetime
 #pragma warning restore CA1001 // Types that own disposable fields should be disposable
 {
     private readonly ApplicationFixture ApplicationFixture;
-#pragma warning disable CA1051 // Do not declare visible instance fields
-    protected HttpClient Client;
-#pragma warning restore CA1051 // Do not declare visible instance fields
+    protected HttpClient Client { get; private set; }
 
     private IDbContextTransaction? DbContextTransaction;
 
