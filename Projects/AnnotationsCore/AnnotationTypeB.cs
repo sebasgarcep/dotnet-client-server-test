@@ -1,4 +1,4 @@
-class AnnotationTypeB : IAnnotation
+public class AnnotationTypeB
 {
     public required int data { get; set; }
 }

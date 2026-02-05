@@ -1,5 +1,0 @@
-- Each annotation type is its own class
-- There is a way to fetch all annotations for a single element
-- There is a way to get annotation by its type
-- Serializable
-- Very type safe
